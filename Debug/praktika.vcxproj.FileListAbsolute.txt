@@ -1,0 +1,4 @@
+C:\Users\Papa\Desktop\Практика 2023\praktika\Debug\praktika.vcxproj.AssemblyReference.cache
+C:\Users\Papa\Desktop\Практика 2023\praktika\Debug\praktika.Form1.resources
+C:\Users\Papa\Desktop\Практика 2023\praktika\Debug\praktika.vcxproj.GenerateResource.cache
+C:\Users\Papa\Desktop\Практика 2023\praktika\Debug\praktika.exe

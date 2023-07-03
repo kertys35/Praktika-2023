@@ -1,5 +1,6 @@
 #pragma once
-#include  "Plant.h"
+#include  "Cell(Blue).h"
+#include "Movement.h"
 #include <locale.h>
 #include <conio.h>
 #include <string.h>
@@ -8,7 +9,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-namespace Plant {
+namespace praktika {
 
 	using namespace System;
 	using namespace System::ComponentModel;
@@ -190,7 +191,7 @@ namespace Plant {
 			// 
 			// textBox_food
 			// 
-			this->textBox_food->Location = System::Drawing::Point(12, 111);
+			this->textBox_food->Location = System::Drawing::Point(21, 111);
 			this->textBox_food->Name = L"textBox_food";
 			this->textBox_food->Size = System::Drawing::Size(100, 20);
 			this->textBox_food->TabIndex = 4;
@@ -209,7 +210,7 @@ namespace Plant {
 			// 
 			// button_simulation_start
 			// 
-			this->button_simulation_start->Location = System::Drawing::Point(621, 590);
+			this->button_simulation_start->Location = System::Drawing::Point(450, 570);
 			this->button_simulation_start->Name = L"button_simulation_start";
 			this->button_simulation_start->Size = System::Drawing::Size(122, 23);
 			this->button_simulation_start->TabIndex = 6;
@@ -259,7 +260,7 @@ namespace Plant {
 			// 
 			// textBox_water
 			// 
-			this->textBox_water->Location = System::Drawing::Point(12, 163);
+			this->textBox_water->Location = System::Drawing::Point(21, 163);
 			this->textBox_water->Name = L"textBox_water";
 			this->textBox_water->Size = System::Drawing::Size(100, 20);
 			this->textBox_water->TabIndex = 11;
@@ -269,15 +270,15 @@ namespace Plant {
 			// Time
 			// 
 			this->Time->Enabled = true;
-			this->Time->Interval = 300;
+			this->Time->Interval = 45;
 			this->Time->Tick += gcnew System::EventHandler(this, &Form1::Time_Tick);
 			// 
 			// panel2
 			// 
 			this->panel2->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->panel2->Location = System::Drawing::Point(162, 540);
+			this->panel2->Location = System::Drawing::Point(162, 541);
 			this->panel2->Name = L"panel2";
-			this->panel2->Size = System::Drawing::Size(1111, 10);
+			this->panel2->Size = System::Drawing::Size(809, 10);
 			this->panel2->TabIndex = 13;
 			// 
 			// panel4
@@ -286,7 +287,7 @@ namespace Plant {
 			this->panel4->Controls->Add(this->panel1);
 			this->panel4->Location = System::Drawing::Point(161, 1);
 			this->panel4->Name = L"panel4";
-			this->panel4->Size = System::Drawing::Size(1112, 8);
+			this->panel4->Size = System::Drawing::Size(807, 8);
 			this->panel4->TabIndex = 15;
 			// 
 			// panel1
@@ -308,7 +309,7 @@ namespace Plant {
 			// panel3
 			// 
 			this->panel3->BackColor = System::Drawing::SystemColors::ActiveCaptionText;
-			this->panel3->Location = System::Drawing::Point(1263, 1);
+			this->panel3->Location = System::Drawing::Point(961, 1);
 			this->panel3->Name = L"panel3";
 			this->panel3->Size = System::Drawing::Size(10, 549);
 			this->panel3->TabIndex = 16;
@@ -317,7 +318,7 @@ namespace Plant {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1292, 630);
+			this->ClientSize = System::Drawing::Size(1007, 630);
 			this->Controls->Add(this->panel3);
 			this->Controls->Add(this->panel6);
 			this->Controls->Add(this->panel4);
@@ -344,13 +345,13 @@ namespace Plant {
 
 		}
 #pragma endregion
-int x, y, step = 0, stop_check = 0, speed_check, step_last = 0,blueNum;
+		int x, y, step = 0, stop_check = 0, speed_check, step_last = 0,reset_check=1;
+		int BlueNum, RedNum, PurpleNum, GreenNum,newNum;
+		int i;
 private: array<PictureBox^>^ Blue;
 private: array<PictureBox^>^ Red;
 private: array<PictureBox^>^ Green;
 private: array<PictureBox^>^ Purple;
- Random^ a = gcnew Random();
- Random^ b = gcnew Random();
 
 	private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 	}
@@ -373,19 +374,63 @@ private: System::Void Time_Tick(System::Object^ sender, System::EventArgs^ e) {
 	textBox_generation->Text = "Поколение: " + step;
 	if (step_last != step)
 	{
-			Blue[blueNum] = gcnew PictureBox();
-			Blue[blueNum]->Location = Point(a->Next(161, 600), b->Next(40, 65));
-			Blue[blueNum]->BackColor = Color::Blue;
-			Blue[blueNum]->Width = 10;
-			Blue[blueNum]->Height = 10;
-			this->Controls->Add(Blue[blueNum]);
-			blueNum += 1;
+		Draw_Movement asdas;
+		Random^ a = gcnew Random();
+		Random^ b = gcnew Random();
+			newNum = asdas.Normal_Move(Blue, 1, BlueNum);
+			for (BlueNum; BlueNum < newNum; BlueNum++)
+			{
+				this->Controls->Add(Blue[BlueNum]);
+			}
+		
+
+			newNum = asdas.Normal_Move(Red, 2, RedNum);
+			for (RedNum; RedNum < newNum; RedNum++)
+			{
+				this->Controls->Add(Red[RedNum]);
+			}
+			
+			newNum = asdas.Normal_Move(Green, 3, GreenNum);
+			for (GreenNum; GreenNum < newNum; GreenNum++)
+			{
+				this->Controls->Add(Green[GreenNum]);
+			}
+			newNum = asdas.Normal_Move(Purple, 4, PurpleNum);
+			for (; PurpleNum < newNum; PurpleNum++)
+			{
+				this->Controls->Add(Purple[PurpleNum]);
+			}
 
 	}
 	step_last = step;
 }
 private: System::Void button_step_Click(System::Object^ sender, System::EventArgs^ e) {
-	step += 1;
+	
+		step += 1;
+if (stop_check==0)
+	{
+		Draw_Movement asdas;
+		Blue = gcnew array <PictureBox^, 1>(6000);
+		asdas.First_Move(Blue, 1);
+		this->Controls->Add(Blue[0]);
+		BlueNum = 1;
+
+		Red = gcnew array <PictureBox^, 1>(6000);
+		asdas.First_Move(Red, 2);
+		this->Controls->Add(Red[0]);
+		RedNum = 1;
+
+		Green = gcnew array <PictureBox^, 1>(6000);
+		asdas.First_Move(Green, 3);
+		this->Controls->Add(Green[0]);
+		GreenNum = 1;
+
+		Purple = gcnew array <PictureBox^, 1>(6000);
+		asdas.First_Move(Purple, 4);
+		this->Controls->Add(Purple[0]);
+		PurpleNum = 1;
+		
+	}
 }
 private: System::Void textBox_food_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 }
@@ -397,30 +442,67 @@ private: System::Void textBox_generation_TextChanged(System::Object^ sender, Sys
 }
 
 private: System::Void radioButton_speed2_Click(System::Object^ sender, System::EventArgs^ e) {
-	Time->Interval = 200;
+	Time->Interval = 30;
 }
 private: System::Void radioButton_speed3_Click(System::Object^ sender, System::EventArgs^ e) {
-	Time->Interval = 100;
+	Time->Interval = 15;
 }
 private: System::Void radioButton_speed1_Click(System::Object^ sender, System::EventArgs^ e) {
-	Time->Interval = 300;
+	Time->Interval = 45;
 }
 private: System::Void button_simulation_start_Click(System::Object^ sender, System::EventArgs^ e) {
-	if (step != 0)
+	if (step > 0)
 	{
-
+		for (int i = BlueNum-1; i >= 0; i--)
+		{
+			this->Controls->Remove(Blue[i]);
+		}
+		for (int i = RedNum-1; i >= 0; i--)
+		{
+			this->Controls->Remove(Red[i]);
+		}
+		for (int i = GreenNum-1; i >= 0; i--)
+		{
+			this->Controls->Remove(Green[i]);
+		}
+		for (int i = PurpleNum-1; i >= 0; i--)
+		{
+			this->Controls->Remove(Purple[i]);
+		}
 	}
 	step = 0;
 	step_last = 0;
-	Blue = gcnew array <PictureBox^, 1>(401);
-	Blue[0] = gcnew PictureBox();
-	Blue[0]->Location = Point(200, 200);
-	Blue[0]->BackColor = Color::Blue;
-	Blue[0]->Width = 10;
-	Blue[0]->Height = 10;
+	Cell_Blue* BLUE_CELLS= new Cell_Blue[6000];
+	Draw_Movement asdas;
+	if (reset_check)
+	{
+		Blue = gcnew array <PictureBox^, 1>(6000);
+		Red = gcnew array <PictureBox^, 1>(6000);
+		Green = gcnew array <PictureBox^, 1>(6000);
+		Purple = gcnew array <PictureBox^, 1>(6000);
+		reset_check = 0;
+	}
+	asdas.First_Move(Blue,1);
 	this->Controls->Add(Blue[0]);
-	blueNum = 1;
+	BlueNum = 1;
+
+
+	asdas.First_Move(Red, 2);
+	this->Controls->Add(Red[0]);
+	RedNum = 1;
+
+
+	asdas.First_Move(Green, 3);
+	this->Controls->Add(Green[0]);
+	GreenNum = 1;
+
+
+	asdas.First_Move(Purple, 4);
+	this->Controls->Add(Purple[0]);
+	PurpleNum = 1; 
 	stop_check = 1;
+
+	
 }
 };
 }

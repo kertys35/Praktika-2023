@@ -29,10 +29,22 @@
     <ClInclude Include="Form1.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="Plant.h">
+    <ClInclude Include="Cell%28Blue%29.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Gamelogic.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Movement.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Cell_Red.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Cell_Green.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Cell_Purple.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -49,10 +61,22 @@
     <ClCompile Include="Form1.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="Plant.cpp">
+    <ClCompile Include="Cell%28Blue%29.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Gamelogic.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Movement.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Cell_Red.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Cell_Green.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="Cell_Purple.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

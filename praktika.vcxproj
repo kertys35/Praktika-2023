@@ -143,17 +143,25 @@
     <ResourceCompile Include="app.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cell_Green.h" />
+    <ClInclude Include="Cell_Purple.h" />
+    <ClInclude Include="Cell_Red.h" />
+    <ClInclude Include="Movement.h" />
     <ClInclude Include="Form1.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="Gamelogic.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="Plant.h" />
+    <ClInclude Include="Cell%28Blue%29.h" />
     <ClInclude Include="Resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="Cell_Green.cpp" />
+    <ClCompile Include="Cell_Purple.cpp" />
+    <ClCompile Include="Cell_Red.cpp" />
     <ClCompile Include="CppCLR_WinformsProjekt.cpp" />
+    <ClCompile Include="Movement.cpp" />
     <ClCompile Include="Form1.cpp" />
     <ClCompile Include="Gamelogic.cpp" />
     <ClCompile Include="pch.cpp">
@@ -162,7 +170,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Plant.cpp" />
+    <ClCompile Include="Cell%28Blue%29.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico" />

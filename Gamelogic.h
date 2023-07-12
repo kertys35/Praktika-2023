@@ -5,6 +5,7 @@ using namespace System::Windows::Forms;
 #include "Cell_Red.h"
 #include "Cell_Green.h"
 #include "Cell_Purple.h"
+#include "Food.h"
 class Game_Logic 
 {
 public:
@@ -43,7 +44,7 @@ public:
 		return 0;
 	}
 
-	int eat(Food_Class* foods, int FoodNum, Cell_Blue BLUE_CELLS)
+	int eat(int FoodNum,Cell_Blue BLUE_CELLS,Food_Class* foods)
 	{
 		for (int i = 0; i < FoodNum; i++)
 		{
@@ -55,7 +56,7 @@ public:
 		return -1;
 	}
 
-	int eat(Food_Class* foods, int FoodNum, Cell_purple purple)
+	int eat(int FoodNum,Cell_purple purple,Food_Class* foods)
 	{
 		for (int i = 0; i < FoodNum; i++)
 		{

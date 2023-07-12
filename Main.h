@@ -597,9 +597,9 @@ private: System::Void Time_Tick(System::Object^ sender, System::EventArgs^ e) {
 		Game_Logic logic;
 		int n = 0;
 		int action,//флаг действий клетки
-			x,
-			y,
-			m,
+			x,		//x координата
+			y,		//y координата
+			m,		// номер клетки
 			probability;	//вероятность действия
 		int prey;	//номер съеденной клетки
 		int BlueDead=0,	//флаг вымирания синих клетки
@@ -767,7 +767,7 @@ private: System::Void Time_Tick(System::Object^ sender, System::EventArgs^ e) {
 		for (int i = 0; i < BlueNum; i++)		//проверка съели ли синие клетки еду
 		{
 			int number; 
-			number = logic.eat(FOOD_CELL, food_num, BLUE_CELLS[i]);
+			number = logic.eat(food_num,BLUE_CELLS[i], FOOD_CELL);
 			if (number != -1)
 			{
 				BLUE_CELLS[i].set_energy(BLUE_CELLS[i].Energy + FOOD_CELL[number].energy);
@@ -779,7 +779,7 @@ private: System::Void Time_Tick(System::Object^ sender, System::EventArgs^ e) {
 		for (int i = 0; i < PurpleNum; i++)		//проверка съели ли фиолетовые клетки еду
 		{
 			int number;
-			number = logic.eat(FOOD_CELL, food_num, PURPLE_CELLS[i]);
+			number = logic.eat(food_num,PURPLE_CELLS[i],FOOD_CELL);
 			if (number != -1)
 			{
 				PURPLE_CELLS[i].set_energy(PURPLE_CELLS[i].Energy + FOOD_CELL[number].energy);

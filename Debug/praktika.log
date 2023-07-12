@@ -1,4 +1,1 @@
-﻿  CppCLR_WinformsProjekt.cpp
-C:\Users\Papa\Desktop\Практика 2023\praktika\Main.h(603,4): warning C4101: probability: неиспользованная локальная переменная
-  AssemblyInfo.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
-  praktika.vcxproj -> C:\Users\Papa\Desktop\Практика 2023\praktika\Debug\praktika.exe
+﻿  praktika.vcxproj -> C:\Users\Papa\Desktop\Практика 2023\praktika\Debug\praktika.exe

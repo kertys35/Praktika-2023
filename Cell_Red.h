@@ -4,27 +4,17 @@ using namespace System::Windows::Forms;
 class Cell_red: public Cell
 {
 public:
-	int Heat;
-	int Agression;
-	int Size;
-	int Spread;
-	Cell_red(int Food, int Heat, int Agression, int Size, int Spread, int x, int y)
+
+	Cell_red(int Food,  int x, int y)
 	{
 		this->Energy = Food;
-		this->Heat = Heat;
-		this->Agression = Agression;
-		this->Size = Size;
-		this->Spread = Spread;
+		this->activnost = 1;
 		this->x = x;
 		this->y = y;
 	}
 	Cell_red()
 	{
 		this->Energy = 15;
-		this->Heat = 1;
-		this->Agression = 1;
-		this->Size = 1;
-		this->Spread = 1;
 		x = 200;
 		y = 200;
 	}
@@ -33,6 +23,7 @@ public:
 		this->x = x;
 		this->y = y;
 		this->Energy = energy;
+		this->activnost = 1;
 	}
 	void set_energy(int energy)
 	{

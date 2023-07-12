@@ -1,5 +1,4 @@
 ﻿  CppCLR_WinformsProjekt.cpp
-C:\Users\Papa\Desktop\Практика 2023\praktika\Movement.h(112,47): warning C4101: foodY: неиспользованная локальная переменная
-C:\Users\Papa\Desktop\Практика 2023\praktika\Movement.h(112,41): warning C4101: foodX: неиспользованная локальная переменная
+C:\Users\Papa\Desktop\Практика 2023\praktika\Main.h(603,4): warning C4101: probability: неиспользованная локальная переменная
   AssemblyInfo.obj : обнаружен модуль MSIL; для MSIL последовательная компоновка отключена; выполняется полная компоновка
   praktika.vcxproj -> C:\Users\Papa\Desktop\Практика 2023\praktika\Debug\praktika.exe

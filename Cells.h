@@ -4,6 +4,7 @@ class Cell
 public:
 	int Energy;
 	int x, y;
+	int activnost;
 	void set_cell(int x, int y, int energy)
 	{
 		this->x = x;

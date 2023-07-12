@@ -103,6 +103,8 @@ namespace praktika {
 
 
 	private: System::Windows::Forms::TextBox^ textBox_1;
+	private: System::Windows::Forms::Button^ button_kill_red;
+
 
 
 
@@ -164,6 +166,7 @@ namespace praktika {
 			this->button_food_fresh_plus = (gcnew System::Windows::Forms::Button());
 			this->textBox_food_fresh = (gcnew System::Windows::Forms::TextBox());
 			this->textBox_1 = (gcnew System::Windows::Forms::TextBox());
+			this->button_kill_red = (gcnew System::Windows::Forms::Button());
 			this->groupBox1->SuspendLayout();
 			this->panel4->SuspendLayout();
 			this->SuspendLayout();
@@ -240,7 +243,7 @@ namespace praktika {
 			this->textBox_food->ReadOnly = true;
 			this->textBox_food->Size = System::Drawing::Size(56, 20);
 			this->textBox_food->TabIndex = 4;
-			this->textBox_food->Text = L"50";
+			this->textBox_food->Text = L"175";
 			this->textBox_food->TextChanged += gcnew System::EventHandler(this, &Main::textBox_food_TextChanged);
 			// 
 			// button_stop
@@ -310,7 +313,7 @@ namespace praktika {
 			this->textBox_water->ReadOnly = true;
 			this->textBox_water->Size = System::Drawing::Size(56, 20);
 			this->textBox_water->TabIndex = 11;
-			this->textBox_water->Text = L"50";
+			this->textBox_water->Text = L"100";
 			this->textBox_water->TextChanged += gcnew System::EventHandler(this, &Main::textBox5_TextChanged);
 			// 
 			// Time
@@ -438,7 +441,7 @@ namespace praktika {
 			this->textBox_food_energy->ReadOnly = true;
 			this->textBox_food_energy->Size = System::Drawing::Size(56, 20);
 			this->textBox_food_energy->TabIndex = 23;
-			this->textBox_food_energy->Text = L"50";
+			this->textBox_food_energy->Text = L"250";
 			// 
 			// textBox
 			// 
@@ -476,7 +479,7 @@ namespace praktika {
 			this->textBox_food_fresh->ReadOnly = true;
 			this->textBox_food_fresh->Size = System::Drawing::Size(56, 20);
 			this->textBox_food_fresh->TabIndex = 27;
-			this->textBox_food_fresh->Text = L"10";
+			this->textBox_food_fresh->Text = L"30";
 			// 
 			// textBox_1
 			// 
@@ -487,11 +490,22 @@ namespace praktika {
 			this->textBox_1->TabIndex = 26;
 			this->textBox_1->Text = L"Время хранения еды:";
 			// 
+			// button_kill_red
+			// 
+			this->button_kill_red->Location = System::Drawing::Point(10, 366);
+			this->button_kill_red->Name = L"button_kill_red";
+			this->button_kill_red->Size = System::Drawing::Size(128, 23);
+			this->button_kill_red->TabIndex = 30;
+			this->button_kill_red->Text = L"Выключить хищников";
+			this->button_kill_red->UseVisualStyleBackColor = true;
+			this->button_kill_red->Click += gcnew System::EventHandler(this, &Main::button1_Click);
+			// 
 			// Main
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1007, 630);
+			this->Controls->Add(this->button_kill_red);
 			this->Controls->Add(this->button_food_fresh_minus);
 			this->Controls->Add(this->panel3);
 			this->Controls->Add(this->button_food_fresh_plus);
@@ -536,23 +550,27 @@ namespace praktika {
 			stop_check = 0,	//флаг паузы симуляции
 			speed_check,	//флаг скорости симуляции
 			step_last = 0,	//номер предыдущего поколения
-			end_check=0;	//флаг завершения симуляции
+			end_check=0,	//флаг завершения симуляции
+			eaten = 0;		//флаг определяющий была ли съедена клетка;
 		int BlueNum, RedNum, PurpleNum, GreenNum,//количество активных клеток
 			newNum;	//номер активной клетки
-		int food_num=50,	//переменная количества еды на поле
-			sun_num=50,		//объём энергии получаемой при фотосинтезе
-			food_energy=50,	//объём энергии получаемой при поедании еды
-			food_fresh=10;	//Время хранения еды
-
+		int food_num=175,	//переменная количества еды на поле
+			sun_num=100,		//объём энергии получаемой при фотосинтезе
+			food_energy=250,	//объём энергии получаемой при поедании еды
+			food_fresh=30;	//Время хранения еды
+		int activB = 1,	//флаг активности синих клеток
+			activR = 1,	//флаг активности красных клеток
+			activG = 1,	//флаг активности зеленых клеток
+			activP = 1;	//флаг активности фиолетовых клеток
 private: array<PictureBox^>^ Blue;	//массив элементов для отображения синих клеток
 private: array<PictureBox^>^ Red;	//массив элементов для отображения красных клеток
 private: array<PictureBox^>^ Green;	//массив элементов для отображения зелёных клеток
 private: array<PictureBox^>^ Purple;//массив элементов для отображения фиолетовых клеток
 private: array<PictureBox^>^ Food;//массив элементов для отображения еды
-Cell_Blue* BLUE_CELLS = new Cell_Blue[10000];	//массив всех синих клеток
-Cell_red* RED_CELLS = new Cell_red[10000];		//массив всех красных клеток
-Cell_green* GREEN_CELLS = new Cell_green[10000];	//массив всех зеленых клеток
-Cell_purple* PURPLE_CELLS = new Cell_purple[10000];	//массив всех фиолетовых клеток
+Cell_Blue* BLUE_CELLS = new Cell_Blue[7000];	//массив всех синих клеток
+Cell_red* RED_CELLS = new Cell_red[7000];		//массив всех красных клеток
+Cell_green* GREEN_CELLS = new Cell_green[7000];	//массив всех зеленых клеток
+Cell_purple* PURPLE_CELLS = new Cell_purple[7000];	//массив всех фиолетовых клеток
 Food_Class* FOOD_CELL = new Food_Class[501]; //массив еды
 
 	private: System::Void textBox1_TextChanged(System::Object^ sender, System::EventArgs^ e) {
@@ -577,20 +595,19 @@ private: System::Void Time_Tick(System::Object^ sender, System::EventArgs^ e) {
 	{
 		Draw_Movement drawing_methods;
 		Game_Logic logic;
+		int n = 0;
 		int action,//флаг действий клетки
 			x,
 			y,
-			m;
-		int prey;//номер съеденной клетки
-		int BlueDead,	//флаг вымирания синих клетки
-			GreenDead,	//флаг вымирания зеленых клетки
-			RedDead,	//флаг вымирания красных клетки
-			PurpleDead;	//флаг вымирания фиолетовых клетки
+			m,
+			probability;	//вероятность действия
+		int prey;	//номер съеденной клетки
+		int BlueDead=0,	//флаг вымирания синих клетки
+			GreenDead=0,	//флаг вымирания зеленых клетки
+			RedDead=0,	//флаг вымирания красных клетки
+			PurpleDead=0;	//флаг вымирания фиолетовых клетки
 
-		int activB=1,	//флаг активности синих клеток
-			activR=1,	//флаг активности красных клеток
-			activG=1,	//флаг активности зеленых клеток
-			activP=1;	//флаг активности фиолетовых клеток
+	
 		for (int i = 0; i < food_num; i++)
 		{
 			if (FOOD_CELL[i].freshness <= 0)
@@ -600,8 +617,8 @@ private: System::Void Time_Tick(System::Object^ sender, System::EventArgs^ e) {
 				int TempX = x % 10;
 				y = rand() % 511 +20;
 				int TempY = y % 10;
-				//x -= TempX;
-				//y -= TempY;
+				x -= TempX;
+				y -= TempY;
 				FOOD_CELL[i].set_Food(food_energy, food_fresh, x, y);
 				FOOD_CELL[i].place_food(Food, x, y,i);
 				this->Controls->Add(Food[i]);
@@ -610,162 +627,184 @@ private: System::Void Time_Tick(System::Object^ sender, System::EventArgs^ e) {
 		newNum = 0;
 		if (activB)
 		{
-			while (newNum < 30 && newNum< BlueNum)	//30 синих клеток осуществляют действия
+			while (newNum < 20 && newNum< BlueNum)	//30 синих клеток осуществляют действия
 			{
 				newNum++;
 				m = rand() % BlueNum;
-				if (BLUE_CELLS[m].Energy > 0)
-					action = rand() % 3 + 1;
-				else
-					action = 0;
-				switch (action)
+				if (BLUE_CELLS[m].activnost)
 				{
-				case 1:
-					drawing_methods.Normal_Move(Blue[m], Food, food_num);
-					BLUE_CELLS[m].set_cell(Blue[m]->Location.X, Blue[m]->Location.Y, BLUE_CELLS[m].Energy);
-					this->Controls->Add(Blue[m]);
-					break;
-				case 2:
-					break;
-				case 3:
-
-					drawing_methods.Create_New_Cell(Blue, 1, BlueNum, m);
-					this->Controls->Add(Blue[BlueNum]);
-					BLUE_CELLS[BlueNum].set_cell(Blue[BlueNum]->Location.X, Blue[BlueNum]->Location.Y, BLUE_CELLS[m].Energy / 2);
-					BLUE_CELLS[m].set_energy(BLUE_CELLS[m].Energy / 2);
-					BlueNum++;
-					break;
-				default:
-					break;
+					BLUE_CELLS[m].activnost = 0;
+					action = rand() % 2 + 1;
+					switch (action)
+					{
+					case 1:
+						drawing_methods.Normal_Move_food(Blue[m], Food, food_num);
+						BLUE_CELLS[m].set_cell(Blue[m]->Location.X, Blue[m]->Location.Y, BLUE_CELLS[m].Energy);
+						this->Controls->Add(Blue[m]);
+						break;
+					case 2:
+						drawing_methods.Create_New_Cell(Blue, 1, BlueNum, m);
+						this->Controls->Add(Blue[BlueNum]);
+						BLUE_CELLS[BlueNum].set_cell(Blue[BlueNum]->Location.X, Blue[BlueNum]->Location.Y, BLUE_CELLS[m].Energy / 2);
+						BLUE_CELLS[m].set_energy(BLUE_CELLS[m].Energy / 2);
+						BlueNum++;
+						break;
+					default:
+						break;
+					}
 				}
 			}
 		}
+		
 		newNum = 0;
 		if (activR)
 		{
-			while (newNum < 30 && newNum < RedNum)	//30 красных клеток осуществляют действия
+			while (newNum < 40 && newNum < RedNum)	//30 красных клеток осуществляют действия
 			{
 				newNum++;
 				m = rand() % RedNum;
-				if (RED_CELLS[m].Energy > 0)
-					action = rand() % 3 + 1;
-				else
-					action = 0;
-				switch (action)
+				if (RED_CELLS[m].activnost)
 				{
-				case 1:
-					drawing_methods.Normal_Move(Red[m], Food, food_num);
-					RED_CELLS[m].set_cell(Red[m]->Location.X, Red[m]->Location.Y, RED_CELLS[m].Energy);
-					this->Controls->Add(Red[m]);
-					break;
-				case 2:
-					break;
-				case 3:
+					RED_CELLS[m].activnost = 0;
+					if (RED_CELLS[m].Energy > 60 || eaten)
+						action = rand() % 3 + 1;
+					else
+						action = 1;
 
-					drawing_methods.Create_New_Cell(Red, 2, RedNum, m);
-					this->Controls->Add(Red[RedNum]);
-					RED_CELLS[RedNum].set_cell(Red[RedNum]->Location.X, Red[RedNum]->Location.Y, RED_CELLS[m].Energy / 2);
-					RED_CELLS[m].set_energy(RED_CELLS[m].Energy / 2);
-					RedNum++;
-					break;
-				default:
-					break;
+					switch (action)
+					{
+					case 1:
+						drawing_methods.Normal_Move_Predator(Red[m], BLUE_CELLS, GREEN_CELLS, PURPLE_CELLS, BlueNum, GreenNum, PurpleNum, activB, activG, activP);
+						RED_CELLS[m].set_cell(Red[m]->Location.X, Red[m]->Location.Y, RED_CELLS[m].Energy);
+						this->Controls->Add(Red[m]);
+						break;
+					case 2:
+						drawing_methods.Create_New_Cell(Red, 2, RedNum, m);
+						this->Controls->Add(Red[RedNum]);
+						RED_CELLS[RedNum].set_cell(Red[RedNum]->Location.X, Red[RedNum]->Location.Y, RED_CELLS[m].Energy / 2);
+						RED_CELLS[m].set_energy(RED_CELLS[m].Energy / 2);
+						RedNum++;
+						break;
+					default:
+						break;
+					}
 				}
-
 			}
 		}
 		
 		newNum = 0;
 		if (activG )
 		{
-			while (newNum < 30 && newNum < GreenNum)	//30 зеленых клеток осуществляют действия
+			while (newNum < 20 && newNum < GreenNum)	//20 зеленых клеток осуществляют действия
 			{
 				newNum++;
 				m = rand() % GreenNum;
-				if (GREEN_CELLS[m].Energy > 0)
-					action = rand() % 3 + 1;
-				else
-					action = 0;
-				switch (action)
+				if (GREEN_CELLS[m].activnost)
 				{
-				case 1:
-					drawing_methods.Normal_Move(Green[m], Food, food_num);
-					GREEN_CELLS[m].set_cell(Green[m]->Location.X, Green[m]->Location.Y, GREEN_CELLS[m].Energy);
-					this->Controls->Add(Green[m]);
-					break;
-				case 2:
-					GREEN_CELLS[m].set_energy(GREEN_CELLS[m].Energy + sun_num);
-					break;
-				case 3:
-					drawing_methods.Create_New_Cell(Green, 3, GreenNum, m);
-					this->Controls->Add(Green[GreenNum]);
-					GREEN_CELLS[GreenNum].set_cell(Green[GreenNum]->Location.X, Green[GreenNum]->Location.Y, GREEN_CELLS[m].Energy / 2);
-					GREEN_CELLS[m].set_energy(GREEN_CELLS[m].Energy / 2);
-					GreenNum++;
-					break;
-				default:
-					break;
+					GREEN_CELLS[m].activnost = 0;
+					if (GREEN_CELLS[m].Energy > 0)
+						action = rand() % 3 + 1;
+					else
+						action = 0;
+					switch (action)
+					{
+					case 1:
+						drawing_methods.Normal_Move(Green[m]);
+						GREEN_CELLS[m].set_cell(Green[m]->Location.X, Green[m]->Location.Y, GREEN_CELLS[m].Energy);
+						this->Controls->Add(Green[m]);
+						break;
+					case 2:
+						GREEN_CELLS[m].set_energy(GREEN_CELLS[m].Energy + sun_num);
+						break;
+					case 3:
+						drawing_methods.Create_New_Cell(Green, 3, GreenNum, m);
+						this->Controls->Add(Green[GreenNum]);
+						GREEN_CELLS[GreenNum].set_cell(Green[GreenNum]->Location.X, Green[GreenNum]->Location.Y, GREEN_CELLS[m].Energy / 2);
+						GREEN_CELLS[m].set_energy(GREEN_CELLS[m].Energy / 2);
+						GreenNum++;
+						break;
+					default:
+						break;
+					}
 				}
-
 			}
 		}
 		
 		newNum = 0;
 		if (activP )
 		{
-			while (newNum < 20 && newNum < PurpleNum) //10 фиолетовых клеток осуществляют действия
+			while (newNum < 20 && newNum < PurpleNum) //20 фиолетовых клеток осуществляют действия
 			{
 				newNum++;
 				m = rand() % PurpleNum;
-				action = rand() % 3 + 1;
-				switch (action)
+				if (PURPLE_CELLS[m].activnost)
 				{
-				case 1:
-					drawing_methods.Normal_Move(Purple[m], Food, food_num);
-					PURPLE_CELLS[m].set_cell(Purple[m]->Location.X, Purple[m]->Location.Y, PURPLE_CELLS[m].Energy);
-					this->Controls->Add(Purple[m]);
-					break;
-				case 2:
-					PURPLE_CELLS[m].set_energy(PURPLE_CELLS[m].Energy + sun_num);
-					break;
-				case 3:
-					drawing_methods.Create_New_Cell(Purple, 4, PurpleNum, m);
-					this->Controls->Add(Purple[PurpleNum]);
-					PURPLE_CELLS[PurpleNum].set_cell(Purple[PurpleNum]->Location.X, Purple[PurpleNum]->Location.Y, PURPLE_CELLS[m].Energy / 2);
-					PURPLE_CELLS[m].set_energy(PURPLE_CELLS[m].Energy / 2);
-					PurpleNum++;
-					break;
-				default:
-					break;
+					PURPLE_CELLS[m].activnost = 0;
+					action = rand() % 3 + 1;
+					switch (action)
+					{
+					case 1:
+						drawing_methods.Normal_Move_food(Purple[m], Food, food_num);
+						PURPLE_CELLS[m].set_cell(Purple[m]->Location.X, Purple[m]->Location.Y, PURPLE_CELLS[m].Energy);
+						this->Controls->Add(Purple[m]);
+						break;
+					case 2:
+						PURPLE_CELLS[m].set_energy(PURPLE_CELLS[m].Energy + sun_num);
+						break;
+					case 3:
+						drawing_methods.Create_New_Cell(Purple, 4, PurpleNum, m);
+						this->Controls->Add(Purple[PurpleNum]);
+						PURPLE_CELLS[PurpleNum].set_cell(Purple[PurpleNum]->Location.X, Purple[PurpleNum]->Location.Y, PURPLE_CELLS[m].Energy / 2);
+						PURPLE_CELLS[m].set_energy(PURPLE_CELLS[m].Energy / 2);
+						PurpleNum++;
+						break;
+					default:
+						break;
+					}
 				}
-
 			}
 		}
 		for (int i = 0; i < BlueNum; i++)		//проверка съели ли синие клетки еду
 		{
-			BLUE_CELLS[i].eat(FOOD_CELL, food_num, BLUE_CELLS[i]);
+			int number; 
+			number = logic.eat(FOOD_CELL, food_num, BLUE_CELLS[i]);
+			if (number != -1)
+			{
+				BLUE_CELLS[i].set_energy(BLUE_CELLS[i].Energy + FOOD_CELL[number].energy);
+				FOOD_CELL[number].freshness = 0;
+			}
+
 		}
 
 		for (int i = 0; i < PurpleNum; i++)		//проверка съели ли фиолетовые клетки еду
 		{
-			PURPLE_CELLS[i].eat(FOOD_CELL, food_num, PURPLE_CELLS[i]);
+			int number;
+			number = logic.eat(FOOD_CELL, food_num, PURPLE_CELLS[i]);
+			if (number != -1)
+			{
+				PURPLE_CELLS[i].set_energy(PURPLE_CELLS[i].Energy + FOOD_CELL[number].energy);
+				FOOD_CELL[number].freshness = 0;
+			}
 		}
 
 		for (int i = 0; i < RedNum; i++)	//проверка, съели ли красные клетки другие клетки
 		{
-			switch (logic.eat_cell(Blue, Red[i], Green, Purple, BlueNum, GreenNum, PurpleNum, &prey))
+			switch (logic.eat_cell(BLUE_CELLS, Red[i], GREEN_CELLS, PURPLE_CELLS, BlueNum, GreenNum, PurpleNum, &prey,activB, activG, activP))
 			{
 			case 1:
 				RED_CELLS[i].set_energy(RED_CELLS[i].Energy + BLUE_CELLS[prey].Energy);
-				BLUE_CELLS[i].set_energy(0);
+				BLUE_CELLS[prey].set_energy(0);
+				eaten = 1;
 				break;
 			case 2:
 				RED_CELLS[i].set_energy( RED_CELLS[i].Energy+ PURPLE_CELLS[prey].Energy);
-				PURPLE_CELLS[i].set_energy(0);
+				PURPLE_CELLS[prey].set_energy(0);
+				eaten = 1;
 				break;
 			case 3:
 				RED_CELLS[i].set_energy(RED_CELLS[i].Energy + GREEN_CELLS[prey].Energy);
-				GREEN_CELLS[i].set_energy(0);
+				GREEN_CELLS[prey].set_energy(0);
+				eaten = 1;
 				break;
 			default:
 				break;
@@ -783,46 +822,82 @@ private: System::Void Time_Tick(System::Object^ sender, System::EventArgs^ e) {
 			RedDead = 0;
 			PurpleDead = 0;
 
-			for (int i = 0; i < BlueNum; i++)			//проверка смерти синих клеток
+			for (int i = 0; i < BlueNum;i++)			//проверка смерти синих клеток
 			{
-				BLUE_CELLS[i].set_energy(BLUE_CELLS[i].Energy-1);
+				BLUE_CELLS[i].activnost = 1;
+				BLUE_CELLS[i].set_energy((BLUE_CELLS[i].Energy-1));
 				if (BLUE_CELLS[i].Energy<1)
 				{
 					this->Controls->Remove(Blue[i]);
+					for (int k = i; k < BlueNum - 1; k++)
+					{
+						BLUE_CELLS[k] = BLUE_CELLS[k + 1];
+						Blue[k] = Blue[k + 1];
+					}
+					BlueNum--;
 				}
 				else
+				{
 					BlueDead += 1;
+				}
 			}
 			for (int i = 0; i < RedNum; i++)	//проверка смерти красных клеток
 			{
-				RED_CELLS[i].set_energy(RED_CELLS[i].Energy-1);
+				RED_CELLS[i].activnost = 1;
+				RED_CELLS[i].set_energy((RED_CELLS[i].Energy-2));
 				if (RED_CELLS[i].Energy < 1)
 				{
 					this->Controls->Remove(Red[i]);
+					for (int k = i; k < RedNum; k++)
+					{
+						RED_CELLS[k] = RED_CELLS[k + 1];
+						Red[k] = Red[k + 1];
+					}
+					RedNum--;
 				}
 				else
-					RedDead += 1;
+				{
+					RedDead ++;
+				}
 			}
 			for (int i = 0; i < GreenNum; i++)	//проверка смерти зеленых клеток
 			{
-				GREEN_CELLS[i].set_energy(GREEN_CELLS[i].Energy-1);
+				GREEN_CELLS[i].activnost = 1;
+				GREEN_CELLS[i].set_energy((GREEN_CELLS[i].Energy-1));
 				if (GREEN_CELLS[i].Energy < 1)
 				{
 					this->Controls->Remove(Green[i]);
+					for (int k = i; k < GreenNum - 1; k++)
+					{
+						GREEN_CELLS[k] = GREEN_CELLS[k + 1];
+						Green[k] = Green[k + 1];
+					}
+					GreenNum--;
 				}
 				else
-					GreenDead += 1;
+				{
+					GreenDead ++;
+				}
 			}
 
 			for (int i = 0; i < PurpleNum; i++)	//проверка смерти фиолетовых клеток
 			{
-				PURPLE_CELLS[i].set_energy(PURPLE_CELLS[i].Energy-1);
+				PURPLE_CELLS[i].activnost = 1;
+				PURPLE_CELLS[i].set_energy((PURPLE_CELLS[i].Energy-1));
 				if (PURPLE_CELLS[i].Energy < 1)
 				{
 					this->Controls->Remove(Purple[i]);
+					for (int k = i; k < PurpleNum - 1; k++)
+					{
+						PURPLE_CELLS[k] = PURPLE_CELLS[k + 1];
+						Purple[k] = Purple[k + 1];
+					}
+					PurpleNum--;
 				}
 				else
-					PurpleDead += 1;
+				{
+					PurpleDead ++;
+				}
 			}
 			if (BlueDead == 0)
 				activB = 0;
@@ -863,7 +938,11 @@ private: System::Void button_step_Click(System::Object^ sender, System::EventArg
 private: System::Void textBox_food_TextChanged(System::Object^ sender, System::EventArgs^ e) {
 }
 private: System::Void Form1_Load(System::Object^ sender, System::EventArgs^ e) {
-
+	Blue = gcnew array <PictureBox^, 1>(7000);
+	Red = gcnew array <PictureBox^, 1>(7000);
+	Green = gcnew array <PictureBox^, 1>(7000);
+	Purple = gcnew array <PictureBox^, 1>(7000);
+	Food = gcnew array <PictureBox^, 1>(501);
 }
 
 private: System::Void textBox_generation_TextChanged(System::Object^ sender, System::EventArgs^ e) {
@@ -880,23 +959,21 @@ private: System::Void radioButton_speed1_Click(System::Object^ sender, System::E
 }
 private: System::Void button_simulation_start_Click(System::Object^ sender, System::EventArgs^ e) {
 	Draw_Movement asdas;
+	activR = 1;
+	activB = 1;
+	activG = 1;
+	activP = 1;
+	eaten = 0;
 	int x, y;
-
-		Blue = gcnew array <PictureBox^, 1>(10000);
-		Red = gcnew array <PictureBox^, 1>(10000);
-		Green = gcnew array <PictureBox^, 1>(10000);
-		Purple = gcnew array <PictureBox^, 1>(10000);
-		Food = gcnew array <PictureBox^, 1>(501);
-	
 	asdas.First_Move(Blue,1);
 	this->Controls->Add(Blue[0]);
-	BLUE_CELLS[0].set_cell(Blue[0]->Location.X, Blue[0]->Location.Y,1000);
+	BLUE_CELLS[0].set_cell(Blue[0]->Location.X, Blue[0]->Location.Y,4000);
 	BlueNum = 1;
 
 
 	asdas.First_Move(Red, 2);
 	this->Controls->Add(Red[0]);
-	RED_CELLS[0].set_cell(Red[0]->Location.X, Red[0]->Location.Y, 1000);
+	RED_CELLS[0].set_cell(Red[0]->Location.X, Red[0]->Location.Y, 2000);
 	RedNum = 1;
 
 
@@ -949,9 +1026,9 @@ private: System::Void button_clear_field_Click(System::Object^ sender, System::E
 		{
 			this->Controls->Remove(Food[i]);
 		}
+	stop_check = 0;
 	step = 0;
 	step_last = 0;
-	stop_check = 0;
 	BlueNum = 0;
 	RedNum = 0;
 	GreenNum = 0;
@@ -964,7 +1041,7 @@ private: System::Void button_plus_food_Click(System::Object^ sender, System::Eve
 	int x, y;
 	if (food_num + 25 <= 500)
 	{
-		if(stop_check==0)
+		if(step==0)
 			Food = gcnew array <PictureBox^, 1>(501);
 
 		for (int i = food_num; i <= food_num + 25; i++)
@@ -976,10 +1053,8 @@ private: System::Void button_plus_food_Click(System::Object^ sender, System::Eve
 			int TempY = y % 10;
 			x -= TempX;
 			y -= TempY;
-			FOOD_CELL[i].set_Food(food_energy, food_fresh, x, y);
+			FOOD_CELL[i].set_Food(food_energy, 0, x, y);
 			FOOD_CELL[i].place_food_first(Food, x, y,i);
-			if(stop_check!=0)
-				this->Controls->Add(Food[i]);
 		}
 		food_num += 25;
 	}
@@ -995,7 +1070,7 @@ private: System::Void button_minus_food_Click(System::Object^ sender, System::Ev
 	textBox_food->Text = "" + food_num;
 }
 private: System::Void button_plus_sun_Click(System::Object^ sender, System::EventArgs^ e) {
-	if (sun_num + 25 <= 200)
+	if (sun_num + 25 <= 1000)
 		sun_num += 25;
 	textBox_water->Text = "" + sun_num;
 }
@@ -1005,7 +1080,7 @@ private: System::Void button_minus_sun_Click(System::Object^ sender, System::Eve
 	textBox_water->Text = "" + sun_num;
 }
 private: System::Void button_plus_food_energy_Click(System::Object^ sender, System::EventArgs^ e) {
-	if (food_energy + 25 <= 200)
+	if (food_energy + 25 <= 1000)
 		food_energy += 25;
 	textBox_food_energy->Text = "" + food_energy;
 }
@@ -1023,6 +1098,14 @@ private: System::Void button_food_fresh_minus_Click(System::Object^ sender, Syst
 	if (food_fresh - 10 >= 0)
 		food_fresh -= 10;
 	textBox_food_fresh->Text = "" + food_fresh;
+}
+private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+	for (int i = RedNum - 1; i >= 0; i--)
+	{
+		this->Controls->Remove(Red[i]);
+		RED_CELLS[i].Energy = 0;
+		activR = 0;
+	}
 }
 };
 }

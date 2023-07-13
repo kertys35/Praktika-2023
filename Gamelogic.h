@@ -48,7 +48,7 @@ public:
 	{
 		for (int i = 0; i < FoodNum; i++)
 		{
-			if (abs(BLUE_CELLS.x - foods[i].x) < 20 && abs(BLUE_CELLS.y - foods[i].y) < 20)
+			if (abs(BLUE_CELLS.x - foods[i].x) < 10 && abs(BLUE_CELLS.y - foods[i].y) < 10)
 			{
 				return i;
 			}
@@ -60,7 +60,7 @@ public:
 	{
 		for (int i = 0; i < FoodNum; i++)
 		{
-			if (abs(purple.x - foods[i].x) < 20 && abs(purple.y - foods[i].y) < 20)
+			if (abs(purple.x - foods[i].x) < 10 && abs(purple.y - foods[i].y) < 10)
 			{
 				return i;
 			}

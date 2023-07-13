@@ -28,15 +28,5 @@ public:
 	{
 		this->Energy = energy;
 	}
-
-	int compare_energy(Cell_Blue c)
-	{
-		if (c.Energy > 1)
-			return 1;
-		else
-			return 0;
-	}
-
-
 };
 

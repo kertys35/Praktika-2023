@@ -10,7 +10,7 @@ using namespace System;
 using namespace System::Windows::Forms;
 using namespace System::Drawing;
 
-ref class Draw_Movement
+class Draw_Movement
 {
 public: 
 	void First_Move(array<PictureBox^>^ Cell,int color)	//создание первых клеток со случайным расположением

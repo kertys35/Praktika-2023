@@ -24,25 +24,16 @@ namespace praktika {
 	using namespace System::Drawing;
 	using namespace System::IO;
 
-
-	/// <summary>
-	/// Zusammenfassung fьr Form1
-	/// </summary>
 	public ref class Main : public System::Windows::Forms::Form
 	{
 	public:
 		Main(void)
 		{
 			InitializeComponent();
-			//
-			//TODO: Konstruktorcode hier hinzufьgen.
-			//
 		}
 
 	protected:
-		/// <summary>
-		/// Verwendete Ressourcen bereinigen.
-		/// </summary>
+
 		~Main()
 		{
 			if (components)
@@ -599,8 +590,7 @@ private: System::Void Time_Tick(System::Object^ sender, System::EventArgs^ e) {
 		int action,//флаг действий клетки
 			x,		//x координата
 			y,		//y координата
-			m,		// номер клетки
-			probability;	//веро€тность действи€
+			m;	// номер клетки
 		int prey;	//номер съеденной клетки
 		int BlueDead=0,	//флаг вымирани€ синих клетки
 			GreenDead=0,	//флаг вымирани€ зеленых клетки
@@ -767,7 +757,7 @@ private: System::Void Time_Tick(System::Object^ sender, System::EventArgs^ e) {
 		for (int i = 0; i < BlueNum; i++)		//проверка съели ли синие клетки еду
 		{
 			int number; 
-			number = logic.eat(food_num,BLUE_CELLS[i], FOOD_CELL);
+			number = logic.eat_blue(food_num,BLUE_CELLS[i], FOOD_CELL);
 			if (number != -1)
 			{
 				BLUE_CELLS[i].set_energy(BLUE_CELLS[i].Energy + FOOD_CELL[number].energy);
@@ -779,7 +769,7 @@ private: System::Void Time_Tick(System::Object^ sender, System::EventArgs^ e) {
 		for (int i = 0; i < PurpleNum; i++)		//проверка съели ли фиолетовые клетки еду
 		{
 			int number;
-			number = logic.eat(food_num,PURPLE_CELLS[i],FOOD_CELL);
+			number = logic.eat_purple(food_num,PURPLE_CELLS[i],FOOD_CELL);
 			if (number != -1)
 			{
 				PURPLE_CELLS[i].set_energy(PURPLE_CELLS[i].Energy + FOOD_CELL[number].energy);
@@ -822,11 +812,11 @@ private: System::Void Time_Tick(System::Object^ sender, System::EventArgs^ e) {
 			RedDead = 0;
 			PurpleDead = 0;
 
-			for (int i = 0; i < BlueNum;i++)			//проверка смерти синих клеток
+			for (int i = 0; i < BlueNum; i++)			//проверка смерти синих клеток
 			{
 				BLUE_CELLS[i].activnost = 1;
-				BLUE_CELLS[i].set_energy((BLUE_CELLS[i].Energy-1));
-				if (BLUE_CELLS[i].Energy<1)
+				BLUE_CELLS[i].set_energy((BLUE_CELLS[i].Energy - 1));
+				if (BLUE_CELLS[i].Energy < 1)
 				{
 					this->Controls->Remove(Blue[i]);
 					for (int k = i; k < BlueNum - 1; k++)
@@ -834,6 +824,7 @@ private: System::Void Time_Tick(System::Object^ sender, System::EventArgs^ e) {
 						BLUE_CELLS[k] = BLUE_CELLS[k + 1];
 						Blue[k] = Blue[k + 1];
 					}
+					i--;
 					BlueNum--;
 				}
 				else
@@ -844,7 +835,7 @@ private: System::Void Time_Tick(System::Object^ sender, System::EventArgs^ e) {
 			for (int i = 0; i < RedNum; i++)	//проверка смерти красных клеток
 			{
 				RED_CELLS[i].activnost = 1;
-				RED_CELLS[i].set_energy((RED_CELLS[i].Energy-2));
+				RED_CELLS[i].set_energy((RED_CELLS[i].Energy - 2));
 				if (RED_CELLS[i].Energy < 1)
 				{
 					this->Controls->Remove(Red[i]);
@@ -853,17 +844,18 @@ private: System::Void Time_Tick(System::Object^ sender, System::EventArgs^ e) {
 						RED_CELLS[k] = RED_CELLS[k + 1];
 						Red[k] = Red[k + 1];
 					}
+					i--;
 					RedNum--;
 				}
 				else
 				{
-					RedDead ++;
+					RedDead++;
 				}
 			}
 			for (int i = 0; i < GreenNum; i++)	//проверка смерти зеленых клеток
 			{
 				GREEN_CELLS[i].activnost = 1;
-				GREEN_CELLS[i].set_energy((GREEN_CELLS[i].Energy-1));
+				GREEN_CELLS[i].set_energy((GREEN_CELLS[i].Energy - 1));
 				if (GREEN_CELLS[i].Energy < 1)
 				{
 					this->Controls->Remove(Green[i]);
@@ -872,18 +864,19 @@ private: System::Void Time_Tick(System::Object^ sender, System::EventArgs^ e) {
 						GREEN_CELLS[k] = GREEN_CELLS[k + 1];
 						Green[k] = Green[k + 1];
 					}
+					i--;
 					GreenNum--;
 				}
 				else
 				{
-					GreenDead ++;
+					GreenDead++;
 				}
 			}
 
 			for (int i = 0; i < PurpleNum; i++)	//проверка смерти фиолетовых клеток
 			{
 				PURPLE_CELLS[i].activnost = 1;
-				PURPLE_CELLS[i].set_energy((PURPLE_CELLS[i].Energy-1));
+				PURPLE_CELLS[i].set_energy((PURPLE_CELLS[i].Energy - 1));
 				if (PURPLE_CELLS[i].Energy < 1)
 				{
 					this->Controls->Remove(Purple[i]);
@@ -892,11 +885,12 @@ private: System::Void Time_Tick(System::Object^ sender, System::EventArgs^ e) {
 						PURPLE_CELLS[k] = PURPLE_CELLS[k + 1];
 						Purple[k] = Purple[k + 1];
 					}
+					i--;
 					PurpleNum--;
 				}
 				else
 				{
-					PurpleDead ++;
+					PurpleDead++;
 				}
 			}
 			if (BlueDead == 0)
@@ -910,8 +904,7 @@ private: System::Void Time_Tick(System::Object^ sender, System::EventArgs^ e) {
 
 			if (BlueDead==0 && RedDead==0 && GreenDead==0 && PurpleDead==0)	//прекращение симул€ции если  нет живых клеток
 			{
-				step = 0;
-				step_last = 0;
+				step_last = step;
 				stop_check = 0;
 				BlueNum = 0;
 				RedNum = 0;

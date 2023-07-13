@@ -44,7 +44,7 @@ public:
 		return 0;
 	}
 
-	int eat(int FoodNum,Cell_Blue BLUE_CELLS,Food_Class* foods)
+	int eat_blue(int FoodNum,Cell_Blue BLUE_CELLS,Food_Class* foods)
 	{
 		for (int i = 0; i < FoodNum; i++)
 		{
@@ -56,7 +56,7 @@ public:
 		return -1;
 	}
 
-	int eat(int FoodNum,Cell_purple purple,Food_Class* foods)
+	int eat_purple(int FoodNum,Cell_purple purple,Food_Class* foods)
 	{
 		for (int i = 0; i < FoodNum; i++)
 		{
